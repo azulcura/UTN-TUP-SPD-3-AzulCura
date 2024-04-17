@@ -1,13 +1,15 @@
-﻿using ToDoList_Practica.Data;
+﻿using System.Threading.Tasks;
 using ToDoList_Practica.Models;
 
 namespace ToDoList_Practica.Services.Interfaces
 {
     public interface ITodoItemServices
     {
-        public List<TodoItem> GetAllTodoItems();
-        public TodoItem GetTodoItemById(int id);
-        public int AddTodoItem(TodoItemDto item);
-        public int DeleteTodoItem(int id);
+        List<TodoItem> GetAllTodoItems();
+        TodoItem GetTodoItemById(int id);
+        int AddTodoItem(TodoItemDto item);
+        int DeleteTodoItem(int id);
+        Task UpdateTodoItem(int id, TodoItemDto todoItemDto);
     }
 }
+

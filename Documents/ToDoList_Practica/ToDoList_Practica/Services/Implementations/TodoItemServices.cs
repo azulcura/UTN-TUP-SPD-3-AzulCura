@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using ToDoList_Practica.Data;
 using ToDoList_Practica.DBContext;
@@ -50,5 +51,35 @@ namespace ToDoList_Practica.Services
             _context.SaveChanges();
             return 1;
         }
+        public async Task UpdateTodoItem(int id, TodoItemDto todoItemDto)
+        {
+            try
+            {
+                var existingTodoItem = await _context.TodoItems.FindAsync(id);
+                if (existingTodoItem == null)
+                {
+                    throw new Exception($"TodoItem con ID {id} no encontrado.");
+                }
+
+                existingTodoItem.title = todoItemDto.title;
+                existingTodoItem.description = todoItemDto.description;
+                existingTodoItem.UserId = todoItemDto.UserId;
+
+                _context.Entry(existingTodoItem).State = EntityState.Modified;
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                var innerException = ex.InnerException;
+                while (innerException != null)
+                {
+                    Console.WriteLine(innerException.Message);
+                    innerException = innerException.InnerException;
+                }
+                throw;
+            }
+        }
+
     }
 }

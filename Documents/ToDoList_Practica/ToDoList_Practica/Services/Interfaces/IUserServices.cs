@@ -10,6 +10,8 @@ namespace ToDoList_Practica.Services.Interfaces
         public User AddUser(UserDto user);
         public int DeleteUser(int id);
 
+        public User UpdateUser(int id, UserDto user);
+
         List<TodoItem> GetTodoItemsByUserId(int userId);
     }
 }

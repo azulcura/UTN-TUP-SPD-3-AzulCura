@@ -42,7 +42,20 @@ namespace ToDoList_Practica.Services
             _context.SaveChanges();
             return newUser;
         }
+        public User UpdateUser(int id, UserDto user)
+        {
+            var existingUser = _context.Users.Find(id);
+            if (existingUser == null)
+                return null;
 
+            existingUser.name = user.name;
+            existingUser.email = user.email;
+            existingUser.address = user.address;
+
+            _context.SaveChanges();
+
+            return existingUser;
+        }
         public int DeleteUser(int id)
         {
             var user = _context.Users.FirstOrDefault(u => u.id == id);

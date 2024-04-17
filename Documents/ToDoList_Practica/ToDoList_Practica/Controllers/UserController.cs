@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList_Practica.Models;
+using ToDoList_Practica.Services;
 using ToDoList_Practica.Services.Interfaces;
 
 namespace ToDoList_Practica.Controllers
@@ -54,6 +55,17 @@ namespace ToDoList_Practica.Controllers
             };
 
             return CreatedAtAction(nameof(GetUser), new { id = newUser.id }, userResponse);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
+        {
+            var updatedUser = _userServices.UpdateUser(id, userDto);
+            if (updatedUser == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedUser);
         }
 
         [HttpDelete("{id}")]

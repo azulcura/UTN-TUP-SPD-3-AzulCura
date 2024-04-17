@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ToDoList_Practica.Models;
+using ToDoList_Practica.Services;
 using ToDoList_Practica.Services.Interfaces;
 
 namespace ToDoList_Practica.Controllers
@@ -15,7 +16,6 @@ namespace ToDoList_Practica.Controllers
             _todoItemServices = todoItemServices;
         }
 
-        // GET: api/TodoItem
         [HttpGet]
         public IActionResult GetTodoItems()
         {
@@ -23,7 +23,6 @@ namespace ToDoList_Practica.Controllers
             return Ok(todoItems);
         }
 
-        // GET: api/TodoItem/5
         [HttpGet("{id}")]
         public IActionResult GetTodoItem(int id)
         {
@@ -34,8 +33,16 @@ namespace ToDoList_Practica.Controllers
             }
             return Ok(todoItem);
         }
-
-        // POST: api/TodoItem
+        [HttpPut("{id}")]
+        public IActionResult UpdateTodoItem(int id, [FromBody] TodoItemDto itemDto)
+        {
+            var updatedItem = _todoItemServices.UpdateTodoItem(id, itemDto);
+            if (updatedItem == null)
+            {
+                return NotFound();
+            }
+            return Ok(updatedItem);
+        }
         [HttpPost]
         public IActionResult AddTodoItem(TodoItemDto item)
         {
@@ -49,7 +56,6 @@ namespace ToDoList_Practica.Controllers
             return CreatedAtAction(nameof(GetTodoItem), new { id = newItemId }, todoItemResponse);
         }
 
-        // DELETE: api/TodoItem/5
         [HttpDelete("{id}")]
         public IActionResult DeleteTodoItem(int id)
         {
